@@ -43,6 +43,9 @@ const mutations = {
   },
   [types.SET_FAVORITE] (state, list) {
     state.favorite = list
+  },
+  [types.SET_VKEY] (state, vkey) {
+    state.vkey = vkey
   }
 }
 export default mutations

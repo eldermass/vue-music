@@ -12,5 +12,6 @@ router.get('/ranklist', controllers.ranklist)
 router.get('/ranklistsongs', controllers.ranklistsongs)
 router.get('/hotkey', controllers.hotkey)
 router.get('/searching', controllers.searching)
+router.get('/vkey', controllers.vkey)
 
 module.exports = router

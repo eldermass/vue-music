@@ -17,10 +17,23 @@
 import Player from '@/views/player/player'
 import Header from 'components/Header'
 import Footer from 'components/Footer'
+import {mapMutations} from 'vuex'
+
 export default {
   name: 'App',
   components:{
     Header, Footer, Player
+  },
+  mounted() {
+    this.$get('/vkey').then(res => {
+      let res1 = res.data.replace(/\(({.+})\)/, ($, $1) => {
+        let vkey = JSON.parse($1).req.data.vkey
+        this.SET_VKEY(vkey)
+      })
+    })
+  },
+  methods: {
+    ...mapMutations(['SET_VKEY'])
   }
 }
 </script>

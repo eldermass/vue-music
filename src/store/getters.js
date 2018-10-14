@@ -15,3 +15,4 @@ export const currentSong = state => state.playList[state.currentIndex] || {}
 export const searchHistory = state => state.searchHistory
 export const playHistory = state => state.playHistory
 export const favorite = state => state.favorite
+export const vkey = state => state.vkey

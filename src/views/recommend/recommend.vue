@@ -37,6 +37,7 @@ import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
 import {playlistMixin} from 'common/js/mixin'
 import {mapMutations} from 'vuex'
+import {getSlider} from '@/api/recommend'
 export default {
     mixins: [playlistMixin],
     data(){

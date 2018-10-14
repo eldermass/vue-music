@@ -41,6 +41,10 @@
                 </div>
             </div>
             <div class="bottom">
+                <div class="vocie-wrapper">
+                    <Volume @volume='changeVolume' v-show="showVolumn"></Volume>
+                    <span :class="['iconfont', volumnIcon]" @click="toggleVolShow"></span>
+                </div>
                 <div class="dot-wrapper">
                     <div :class="['dot', {'dot-active': !lycPageShow}]"></div>
                     <div :class="['dot', {'dot-active': lycPageShow}]"></div>
@@ -82,7 +86,7 @@
                 <p class="desc">{{currentSong.singer | singer}}</p>
             </div>
             <div class="controller">
-                <ProgressCircle :percent='curPercent'>
+                <ProgressCircle :percent='curPercent' @svgclicked='toggleState'>
                     <div :class="{'higher':playingState}">
                         <span :class="['iconfont iconplay', playIconStyle]" @click.stop="toggleState"></span>
                     </div>
@@ -107,6 +111,7 @@ import ProgressCircle from './progress-circle'
 import Lyric from 'lyric-parser'
 import Scroll from 'components/Scroll'
 import Playlist from './playlist'
+import Volume from './volume'
 import {favoriteMix} from 'common/js/mixin'
 export default {
     mixins: [favoriteMix],
@@ -118,10 +123,29 @@ export default {
             currentLrcLine: 0,
             lycPageShow: false,
             touch: {},
-            vkey: `0A7DEBD19F140C4E014A5802713DB9C9C7DD42E324D5198A975AF40325B114407633DEFB6C97DAD4FF229F015B3B833772C72C9BA9093618`
+            showVolumn: false,
+            volumnIcon: 'icon-shengyinyinliangmianxing'
         }
     },
     methods:{
+        hideVolBar() {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+                this.showVolumn = false
+            }, 2000);
+        },
+        toggleVolShow() {
+            this.showVolumn = !this.showVolumn
+            this.hideVolBar()
+        },
+        changeVolume (vol) {
+            if(this.$refs.audio) {
+                vol = Math.max(0, Math.min(100, vol / 100))
+                this.$refs.audio.volume = vol
+            }
+            this.hideVolBar()
+            this.volumnIcon = vol === 0 ? 'icon-shengyinjingyinmianxing' : 'icon-shengyinyinliangmianxing'
+        },
         showPlaylist() {
             this.$refs.playlist.show()
         },
@@ -330,7 +354,7 @@ export default {
         ...mapActions(['savePlayHistory'])
     },
     computed: {
-        ...mapGetters(['playList', 'fullScreen', 'currentSong', 'playingState', 'currentIndex', 'mode', 'sequenceList']),
+        ...mapGetters(['playList', 'fullScreen', 'currentSong', 'playingState', 'currentIndex', 'mode', 'sequenceList', 'vkey']),
         modeIconStyle() {
             let icon = ''
             switch(this.mode){
@@ -412,7 +436,7 @@ export default {
         }
     },
     components: {
-        Progressbar, ProgressCircle, Scroll, Playlist
+        Progressbar, ProgressCircle, Scroll, Playlist, Volume
     }
 }
 </script>
@@ -493,6 +517,13 @@ export default {
         .bottom{
             position: absolute;
             bottom: 2rem;width: 100%;padding:0 1.5rem;
+            .vocie-wrapper{
+                position: absolute;right: 3rem;bottom: 7rem;
+                display: flex;flex-direction: column;align-items: center;
+                .iconfont {
+                    padding-top: 7px; 
+                }
+            }
             .dot-wrapper{
                 .flex;padding-bottom: 1.5rem;
                 .dot{
@@ -568,7 +599,7 @@ export default {
                 font-size: 27px;
             }
             .iconplay{
-                padding-left: 0; 
+                padding-left: 0;
             }
             .higher{
                 transform: translateY(-2.3px);

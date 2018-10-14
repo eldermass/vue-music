@@ -16,6 +16,7 @@ const state = {
   toplist: {},
   searchHistory: loadSearch().slice(),
   playHistory: loadPlayHistory().slice(),
-  favorite: loadFavorite().slice()
+  favorite: loadFavorite().slice(),
+  vkey: ''
 }
 export default state

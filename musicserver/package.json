@@ -13,6 +13,7 @@
   "author": "285653184@qq.com",
   "license": "ISC",
   "dependencies": {
+    "js-base64": "^2.4.9",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
