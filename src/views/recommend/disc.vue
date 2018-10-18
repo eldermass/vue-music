@@ -1,7 +1,7 @@
 <template>
     <transition name="disc">
         <div class="disc">
-            <MusicList  :bg-image='bgImg' :title='title' :songs='disclist'
+            <MusicList  :bg-image='bgImg' :title='title' :songs='disclist' :musicMore='false'
             ></MusicList>
         </div>
     </transition>

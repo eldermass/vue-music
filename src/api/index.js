@@ -2,7 +2,8 @@ import Axios from 'axios'
 
 Axios.defaults.timeout = 10000
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'
-Axios.defaults.baseURL = 'http://localhost:8081'
+Axios.defaults.baseURL = 'http://localhost:8020'
+// Axios.defaults.baseURL = 'http://music.60late.com'
 
 Axios.interceptors.request.use(config => {
   return config

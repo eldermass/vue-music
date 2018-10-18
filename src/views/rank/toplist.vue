@@ -2,7 +2,8 @@
     <transition name='toplist'>
         <div class="toplist">
             <MusicList :title="toplist.topTitle" :bg-image="toplist.picUrl" :songs='topSongs'
-            :backto="{path:'/rank',header:'Rank'}" :rank='true'></MusicList>
+            :backto="{path:'/rank',header:'Rank'}" :rank='true'
+            :musicMore='false'></MusicList>
         </div>
     </transition>
 </template>

@@ -11,8 +11,8 @@
                     <p class="desc">{{getDesc(song)}}</p>
                 </div>
             </li>
-            <li class="item" style="text-align:center;padding:.7rem" @click="getMore" v-show="songs.length">
-                <p class="more" v-show="!isLoading && music">加载更多</p>
+            <li class="item" style="text-align:center;padding:.7rem" @click="getMore" v-show="songs.length && music">
+                <p class="more" v-show="!isLoading">加载更多</p>
                 <img :src="loadingImg" height="20" width="20" v-show="isLoading">
             </li>
         </ul>

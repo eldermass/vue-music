@@ -11,7 +11,7 @@
             </div>
         </div>
         <Songlist :songs='songs' :otherRem='otherRem' @getmoresongs='getMore'
-                 @blurpx='imgblur' @select="selectItem" :rank='rank'></Songlist>
+                 @blurpx='imgblur' @select="selectItem" :rank='rank' :music='musicMore'></Songlist>
     </div>
 </template>
 <script>
@@ -50,6 +50,10 @@ export default {
         rank: {
             type: Boolean,
             default: false
+        },
+        musicMore: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
