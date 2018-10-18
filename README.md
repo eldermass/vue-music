@@ -47,3 +47,6 @@ npm start
 ![](https://i.loli.net/2018/10/18/5bc85381de006.png)
 ![](https://i.loli.net/2018/10/18/5bc85381ed785.png)
 ![](https://i.loli.net/2018/10/18/5bc853820f7ca.png)
+
+# License
+[MIT](https://github.com/RiseUpCY/vue-music/blob/master/LICENSE)
