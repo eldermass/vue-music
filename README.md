@@ -1,6 +1,6 @@
 # mymuisc
 
-1. 本项目是一个模仿原生音乐app，用原生vue实现的一个简化版的web版音乐播放器
+1. 本项目是一个模仿原生音乐app，用原生vue实现的一个简化版的web版音乐播放器 [点击在线预览](http://music.60late.com)
 * 技术栈：前端使用vue、vuex、vue-router，后台使用node-koa2
 * 主要实现：   
   1. [推荐页](#recommend)，轮播图和歌单，推荐详情页歌单
@@ -36,7 +36,6 @@ npm start
 # 用浏览器访问 localhost:8020，切换手机模式后刷新一次
 ```
 2. 以下是部分界面的截图
-[点击在线预览](http://music.60late.com)
 
 2.1 <span id='recommend'>推荐页</span>  
 ![推荐](https://i.loli.net/2018/10/18/5bc8536545cb0.png)
