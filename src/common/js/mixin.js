@@ -4,7 +4,7 @@ import { disturb } from 'common/js/disturb'
 
 export const playlistMixin = {
   computed: {
-    ...mapGetters(['playList'])
+    ...mapGetters(['playList', 'playlistLenght'])
   },
   mounted () {
     this.handlePlaylist(this.playList)
@@ -15,6 +15,7 @@ export const playlistMixin = {
   },
   watch: {
     playList (newList) {
+      // console.log(this.playlistLenght)
       this.handlePlaylist(newList)
     }
   },

@@ -16,6 +16,10 @@
             <span class="iconfont icon-faxian" @click="changePage('Search')"></span>
             <span>{{navData[3]}}</span>
         </router-link>
+        <router-link tag='div' to='/user'>
+            <span class="iconfont icon-mo" @click="changePage('user')"></span>
+            <span>{{navData[3]}}</span>
+        </router-link>
     </div>
 </template>
 <script>
@@ -23,7 +27,7 @@ import {mapMutations} from 'vuex'
 export default {
     data() {
         return {
-            navData:['推荐', '歌手', '排行', '搜索']
+            navData:['推荐', '歌手', '排行', '搜索', '用户']
         }
     },
     methods:{

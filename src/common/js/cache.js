@@ -8,6 +8,8 @@ const PLAY_MAX_LENGTH = 200
 
 const FAVORITE_KEY = 'favorite_list'
 
+const SEATCH_KEY = 'search_history'
+
 function insertArray (arr, value, maxlen) {
   let index = arr.findIndex(val => {
     return val === value
@@ -86,6 +88,7 @@ export function cacheFavorite (song) {
   let oldSongs = storage.get(FAVORITE_KEY) ? storage.get(FAVORITE_KEY) : []
   let newSongs = insertSong(oldSongs, song, 500)
   storage.set(FAVORITE_KEY, newSongs)
+  console.log(oldSongs, newSongs)
   return newSongs
 }
 

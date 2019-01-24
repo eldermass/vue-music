@@ -12,17 +12,17 @@ const router = new Router({
     },
     {
       path: '/recommend',
-      name: 'Recommend',
+      name: 'recommend',
       component: Recommend,
       children: [{
         path: ':id',
-        name: 'Disc',
-        component: resolve => require(['@/views/recommend/disc'], resolve)
+        name: 'disc',
+        component: () => import('@/views/recommend/disc')
       }]
     },
     {
       path: '/singer',
-      name: 'Singer',
+      name: 'singer',
       component: resolve => require(['@/views/singer/singer'], resolve),
       children: [
         {
@@ -34,17 +34,17 @@ const router = new Router({
     },
     {
       path: '/rank',
-      name: 'Rank',
+      name: 'rank',
       component: resolve => require(['@/views/rank/rank'], resolve),
       children: [{
         path: ':id',
-        name: 'Toplist',
+        name: 'toplist',
         component: resolve => require(['@/views/rank/toplist'], resolve)
       }]
     },
     {
       path: '/search',
-      name: 'Search',
+      name: 'search',
       component: resolve => require(['@/views/search/search'], resolve),
       children: [{
         path: ':id',
@@ -53,7 +53,7 @@ const router = new Router({
     },
     {
       path: '/user',
-      name: 'User',
+      name: 'user',
       component: resolve => require(['@/views/user/user'], resolve)
     }
   ]

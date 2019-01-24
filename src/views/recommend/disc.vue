@@ -1,15 +1,18 @@
 <template>
     <transition name="disc">
         <div class="disc">
-            <MusicList  :bg-image='bgImg' :title='title' :songs='disclist' :musicMore='false'
-            ></MusicList>
+            <Backicon />
+            <Discview :bg-image='bgImg' :title='title' :songs='disclist'/>
         </div>
     </transition>
 </template>
 <script>
-import MusicList from 'components/MusicList'
-import {mapGetters} from 'vuex'
-import {createSong} from 'common/js/song'
+import Backicon from '_c/backicon'
+import Discview from '_c/discview'
+import { getDiscList } from '@/api/recommend'
+import { createSong } from 'common/js/song'
+import { mapGetters } from 'vuex'
+
 export default {
     data() {
         return {
@@ -17,18 +20,21 @@ export default {
         }
     },
     created() {
-        this.getDiscList()
+        if(!this.disc.dissid){
+            this.$router.push({ 
+                path: '/recommend'
+            })
+            return
+        }
+        this.getDiscListData()
     },
     methods: {
-        async getDiscList() {
-            if(!this.disc.dissid){
-                this.$router.push({path: '/recommend'})
-                return
-            }
-            let res = await this.$get('/disclist', {dissid: this.disc.dissid})
-            let songlist = res.data.cdlist[0].songlist
-            for(let i = 0; i < songlist.length; i++){
-                if(songlist[i].albummid && songlist[i].strMediaMid)
+        async getDiscListData() {
+            let data = await getDiscList(this.disc.dissid)
+            let songlist = data.cdlist[0].songlist
+
+            for (let i = 0; i < songlist.length; i++) {
+                if (songlist[i].albummid && songlist[i].strMediaMid)
                     this.disclist.push(createSong(songlist[i]))
             }
         }
@@ -43,7 +49,7 @@ export default {
         }
     },
     components:{
-        MusicList
+        Backicon, Discview
     }
 }
 </script>
@@ -51,15 +57,10 @@ export default {
 @import '../../common/less/variable.less';
 .disc{
     position: fixed;
-    top: @top-height; left: 0;bottom: @bottom-height;
+    top: 0;
+    left: 0;bottom: @bottom-height;
     z-index: 10; width: 100%;
     background: lighten(@color-background, 24%);
-    // background: skyblue; 
-    &::after{
-        content: '';
-        display: block;
-        clear: both;
-    }
 }
 .disc-enter-active,.disc-leave-active{
     transition: all 0.5s

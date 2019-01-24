@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Header></Header>
     <div class="container">
       <transition name="router-toggle">
         <keep-alive>
@@ -15,14 +14,13 @@
 
 <script>
 import Player from '@/views/player/player'
-import Header from 'components/Header'
-import Footer from 'components/Footer'
-import {mapMutations} from 'vuex'
+import Footer from '_c/footer'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'App',
   components:{
-    Header, Footer, Player
+    Footer, Player
   },
   mounted() {
     this.$get('/vkey').then(res => {
@@ -40,15 +38,16 @@ export default {
 
 <style lang='less' scoped>
 @import '../src/common/less/variable';
-
+*{
+  font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", STXihei, "Microsoft YaHei", SimHei, "WenQuanYi Micro Hei";
+}
 .container{
   position: fixed;
-  top: @top-height;bottom: @bottom-height;
+  // top: @top-height;
+  top: 0;
+  bottom: @bottom-height;
   left: 0;right: 0;
-  overflow-y: scroll;
-  &::-webkit-scrollbar{
-    width: 0;
-  }
+  // overflow: hidden;
 }
 .router-toggle-enter-active,.router-toggle-leave-active{
   transition: all .3s

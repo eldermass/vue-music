@@ -1,63 +1,65 @@
 <template>
     <transition name="singer">
         <div class="singer-detail">
-            <MusicList :songs='songs' :bg-image='singer.singer_pic' :title='singer.singer_name' 
-            @getmoresong='getMoreSongs' :backto="backto"></MusicList>
+            <Backicon />
+            <Discview :songs='songs' :bg-image='singer.singer_pic' :title='singer.singer_name' 
+                :more='true' @getmoresong='getMoreSongs'/>
+            <!-- <MusicList :songs='songs' :bg-image='singer.singer_pic' :title='singer.singer_name' 
+            @getmoresong='getMoreSongs' :backto="backto"></MusicList> -->
         </div>
     </transition>
 </template>
 <script>
+import Backicon from '_c/backicon'
+import Discview from '_c/discview'
 import { mapGetters } from 'vuex'
+import { getSingerSongs } from '@/api/singer'
+
 import { createSong } from 'common/js/song'
-import MusicList from 'components/MusicList'
 export default {
     data() {
         return {
             page: 0,
-            songs: [],
-            backto: {path:'/singer',header:'Singer'}
+            songs: []
         }
     },
     mounted() {
-        if(this.$route.query.from === 'suggest')
-            this.backto = {path:'/search',header:'Search'}
-        this.getSingerSongs(this.singer.singer_id)
+        this.getSongsList()
     },
     methods: {
-        async getSingerSongs(id, notFirst) {
-            if(!id){
-                this.$router.push({path: this.backto.path})
-                return
-            }
-            if(!notFirst) this.page = 0
+        async getSongsList (notFirst) {
+            if (!this.singer.singer_id) 
+                this.$router.back()
+            // 首次获取
+            if (!notFirst) this.page = 0
+            let data = await getSingerSongs(this.singer.singer_id, this.page)
 
-            let res = await this.$get('/singersongs', { id, page: this.page })
-            // 整理需要的数据
-            let list = res.data.list
+            let list = data.list
             let songs = []
+            // 本次获得的歌曲
+            if (!list) return 
             for(let i = 0; i < list.length; i++){
                 if(list[i].musicData.albummid && list[i].musicData.strMediaMid)
                         songs.push(createSong(list[i].musicData))
-                
             }
             if(notFirst){
                 this.songs = this.songs.concat(songs)
             }else{
                 this.songs = songs
             }
-            // console.log(this.songs)
+
         },
         getMoreSongs() {
             // 加一页歌曲
             this.page++
-            this.getSingerSongs(this.singer.singer_id, true)
+            this.getSongsList(true)
         }
     },
     computed: {
         ...mapGetters(['singer'])
     },
     components:{
-        MusicList
+        Backicon, Discview
     }
 }
 </script>
@@ -65,15 +67,10 @@ export default {
 @import '../../common/less/variable.less';
 .singer-detail{
     position: fixed;bottom: @bottom-height;
-    top: @top-height; left: 0;
+    top: 0; left: 0;
     z-index: 10;
     width: 100%;
     background: lighten(@color-background, 24%);
-    &::after{
-        content: '';
-        display: block;
-        clear: both;
-    }
 }
 .singer-enter-active,.singer-leave-active{
     transition: all 0.5s

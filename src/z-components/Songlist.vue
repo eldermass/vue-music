@@ -3,19 +3,19 @@
         <div class="bglayer" ref="bglayer"></div>
         <Scroll :singer='songs' :probeType='3' :listenScroll='true' @scrolling='dealScroll' 
                 :otherHeight='otherHeight' :otherRem='otherRem' ref="songlist">
-        <ul>
-            <li v-for="(song, index) in songs" :key="song.id" class="item" @click="selectItem(song, index)">
-                <div :class="['num', getRankClass(index)]" v-if='rank'>{{index + 1}}</div>
-                <div class="txt">
-                    <h4 class="name">{{song.name}}</h4>
-                    <p class="desc">{{getDesc(song)}}</p>
-                </div>
-            </li>
-            <li class="item" style="text-align:center;padding:.7rem" @click="getMore" v-show="songs.length && music">
-                <p class="more" v-show="!isLoading">加载更多</p>
-                <img :src="loadingImg" height="20" width="20" v-show="isLoading">
-            </li>
-        </ul>
+            <ul>
+                <li v-for="(song, index) in songs" :key="song.id" class="item" @click="selectItem(song, index)">
+                    <div :class="['num', getRankClass(index)]" v-if='rank'>{{index + 1}}</div>
+                    <div class="txt">
+                        <h4 class="name">{{song.name}}</h4>
+                        <p class="desc">{{getDesc(song)}}</p>
+                    </div>
+                </li>
+                <li class="item" style="text-align:center;padding:.7rem" @click="getMore" v-show="songs.length && music">
+                    <p class="more" v-show="!isLoading">加载更多</p>
+                    <img :src="loadingImg" height="20" width="20" v-show="isLoading">
+                </li>
+            </ul>
         </Scroll>
     </div>    
 </template>

@@ -12,10 +12,12 @@
         </div>
         <Songlist :songs='songs' :otherRem='otherRem' @getmoresongs='getMore'
                  @blurpx='imgblur' @select="selectItem" :rank='rank' :music='musicMore'></Songlist>
+        <Loading v-show="!songs.length" style="z-index:99;position:relative"></Loading>
     </div>
 </template>
 <script>
 import {mapMutations,} from 'vuex'
+import Loading from './Loading'
 import Songlist from './Songlist'
 import {playlistMixin} from 'common/js/mixin'
 export default {
@@ -98,7 +100,7 @@ export default {
         }
     },
     components: {
-        Songlist
+        Songlist, Loading
     }
 }
 </script>
@@ -110,8 +112,8 @@ export default {
         height: 220px;
         // overflow: hidden;
         .filter{
-            background-position-y: -1rem; 
             height: 300px;width: 100%;
+            background-position-y: -1rem; 
             background-size:100% 100%;
             transform-origin:top; 
             position: relative;

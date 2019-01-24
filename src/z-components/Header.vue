@@ -52,14 +52,16 @@ export default {
         position: absolute;top: .5rem;left: 0;
         .icon-back{
             font-size: 20px;
-            color: deepskyblue;
+            color: #00bfff;
         }
     }
     .flex;
     position: fixed;z-index: 9999;
     top:0;left: 0;right: 0;
     height: @top-height;
-    background: linear-gradient(@color-background,lighten(@color-background,13%),lighten(@color-background,10%),lighten(@color-background,13%),@color-background);
+    display: none;
+    background: rgba(0, 191, 255, 0.1);
+    // background: linear-gradient(@color-background,lighten(@color-background,13%),lighten(@color-background,10%),lighten(@color-background,13%),@color-background);
     img{
         height: 1.5rem;
         margin-right: .5rem;

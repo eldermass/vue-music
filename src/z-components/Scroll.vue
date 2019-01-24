@@ -87,7 +87,7 @@ export default {
         irefresh () {
             setTimeout(() => {
                 let height = this.getHeight()
-                this.$refs.wrapper.style.height = height  + 'px'
+                // this.$refs.wrapper.style.height = height  + 'px'
                 this.scroll && this.scroll.refresh()
             }, 20);
         },
@@ -109,28 +109,29 @@ export default {
     },
     watch: {
         data () {
+            console.log('data change')
             setTimeout(() => {
-                let height = this.getHeight()
-                this.$refs.wrapper.style.height = height  + 'px'
-                this.$refs.wrapper.style.overflow = 'hidden'
+                // let height = this.getHeight()
+                // this.$refs.wrapper.style.height = height  + 'px'
+                // this.$refs.wrapper.style.overflow = 'hidden'
                 this.refresh()
             }, 20)
         },
         singer() {
-            let height = this.getHeight()
-            this.$refs.wrapper.style.height = height  + 'px'
-            this.refresh()
+            // let height = this.getHeight()
+            // this.$refs.wrapper.style.height = height  + 'px'
+            // this.refresh()
         },
         otherRem() {
-            let height = this.getHeight()
-            this.$refs.wrapper.style.height = height  + 'px'
-            this.refresh()
+            // let height = this.getHeight()
+            // this.$refs.wrapper.style.height = height  + 'px'
+            // this.refresh()
         }
     }
 
 }
 </script>
-<style lang="less" scoped>
+<style lang="less" scoped> 
 
 </style>
 

@@ -8,16 +8,16 @@
                     <span class="iconfont icon-lajitong" @click.stop="confrimDelAll"></span>
                 </div>
                 <div class="list-content">
-                    <Scroll :data='sequenceList' ref="scroll" :otherHeight='otherHeight'>
-                    <transition-group name='list' tag="ul">
-                        <li class="item" v-for="(item, index) in sequenceList" :key="item.id"
-                            @click="selectItem(item, index)" ref="songsList">
-                            <span :class="['iconfont', 'icon-yinle', {'currentIcon': isCurrentSong(item)}]"></span>
-                            <p class="text">{{item.name}}</p>
-                            <span class="iconfont icon-cha" @click.stop="deleteOne(item)"></span>                            
-                            <span :class="['iconfont',getFavIcon(item)]" @click.stop="toggleFavState(item)"></span>
-                        </li>
-                    </transition-group>
+                    <Scroll class="scroll-wrapper" :data='sequenceList' ref="scroll">
+                        <transition-group name='list' tag="ul">
+                            <li class="item" v-for="(item, index) in sequenceList" :key="item.id"
+                                @click="selectItem(item, index)" ref="songsList">
+                                <span :class="['iconfont', 'icon-yinle', {'currentIcon': isCurrentSong(item)}]"></span>
+                                <p class="text">{{item.name}}</p>
+                                <span :class="['iconfont', getFavIcon(item)]" @click.stop="toggleFavState(item)"></span>
+                                <span class="iconfont icon-cha" @click.stop="deleteOne(item)"></span>                            
+                            </li>
+                        </transition-group>
                     </Scroll>
                 </div>
                 <div class="list-operator">
@@ -36,18 +36,18 @@
     </transition>
 </template>
 <script>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
-import Confirm from 'components/Confirm'
-import {playMode} from 'common/js/config'
-import Scroll from 'components/Scroll'
-import {changeModeMix, favoriteMix} from 'common/js/mixin'
+import Scroll from '_c/scroll'
+import Confirm from '_c/confirm'
+
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { playMode } from 'common/js/config'
+import { changeModeMix, favoriteMix } from 'common/js/mixin'
 import AddSong from './add-song'
 export default {
     mixins: [changeModeMix, favoriteMix],
     data () {
         return {
-            showFlag: false,
-            otherHeight: 0
+            showFlag: false
         }
     },
     methods: {
@@ -87,8 +87,7 @@ export default {
         show() {
             this.showFlag = true
             this.$nextTick(() => {
-                this.otherHeight = this.$refs.listWrap.getBoundingClientRect().height - 6*16
-                this.$refs.scroll.irefresh()
+                this.$refs.scroll.refresh()
             })
         },
         hide() {
@@ -146,65 +145,76 @@ export default {
 <style lang="less" scoped>
 @import '../../common/less/variable.less';
 .playlist{
-    position: absolute;bottom: 0;top: 2.5rem;left:0;right: 0; z-index: 10000;
+    position: fixed;bottom: 0;top: 0;left:0;right: 0; z-index: 10000;
     background-color: rgba(200,200,200,.4);color: steelblue;
     .list-wrapper{
         position: absolute;top: 35%;bottom: 0;left: 0;right: 0;
         background: lighten(@color-background, 23%);overflow: hidden;
         .list-header{
-            padding: .5rem 1rem;border-bottom: 1px solid #ccc;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            padding: .5rem 0;
+            border-bottom: 1px solid #ccc;
             .text{
-                display: inline-block;
-                font-size: 18px;transform: translate(10px,-1px);
+                flex-grow: 1;
+                font-size: 18px;
             }
             .iconfont{
-                float: left;
                 font-size: 23px;
-            }
-            .icon-lajitong{
-                float: right;
-            }
-            &:after{
-                .clearboth;
+                padding: 0 .8rem;
             }
         }
         .list-content{
-            position: absolute;top: 3rem;bottom: 2.5rem;left: 0;right: 0;
+            position: absolute;
+            top: 3rem;
+            bottom: 2.5rem;
+            padding-bottom: 3rem;
+            width: 100%;
             overflow: hidden;
-            .item{
-                padding: .5rem 1rem;
-                border-bottom:1px solid #dfdfdf;
-                .text{
-                    font-size: 17px;max-width: 240px;.wrap;
-                    display: inline-block;
-                    transform: translate(7px, -1px);
+            .scroll-wrapper {
+                height: 100%;
+                .item{
+                    height: 2.8rem;
+                    display: flex;
+                    align-items: center;
+                    padding: .5rem 0.3rem;
+                    border-bottom:1px solid #dfdfdf;
+                    opacity: 1;
+                    overflow: hidden;
+                    .text{
+                        flex-grow: 1;
+                        font-size: 17px;
+                        display: inline-block;
+                        .wrap;
+                    }
+                    .iconfont{
+                        font-size: 20px;
+                        padding: 0 .5rem;
+                    }
+                    .icon-shoucang, .icon-shoucang1{
+                        padding: 0;
+                    }
+                    .xihuan{
+                        color: pink
+                    }
+                    .icon-yinle{
+                        visibility: hidden;
+                    }
+                    .currentIcon{
+                        visibility: visible;
+                    }
                 }
-                .iconfont{
-                    font-size: 20px;float: left;
-                }
-                .icon-cha,.icon-shoucang,.icon-shoucang1{
-                    float: right;padding: 0 .2rem;
-                }
-                .xihuan{
-                    color: pink
-                }
-                .icon-yinle{
-                    visibility: hidden;
-                }
-                .currentIcon{
-                    visibility: visible;
-                }
-            }
-            &:after{
-                .clearboth;
             }
         }
         .list-operator{
-            position: absolute;bottom: 2.5rem;width: 100%;.flex;
+            position: absolute;
+            bottom: 2.5rem;
+            width: 100%;.flex;
             height: 3rem;
             background-color: lighten(@color-background, 23%);
             .add{
-                display: inline-block;padding: .2rem .5rem;
+                display: inline-block; padding: .2rem .5rem;
                 border: 1px solid @color-background;
                 border-radius: 10px;
             }
@@ -230,13 +240,12 @@ export default {
     }
 }
 .list-enter-active, .list-leave-active{
-    transition: all .1s linear;
-    height: 43px;
+    transition: all .2s linear;
 }
 .list-enter, .list-leave-to{
-    opacity: 0;
-    height: 0;
-    padding: 0 1rem !important;
+    opacity: 0!important;
+    height: 0!important;
+    padding: 0 0.3rem!important;
 }
 </style>
 

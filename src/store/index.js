@@ -4,6 +4,7 @@ import state from './state'
 import mutations from './mutations'
 import * as actions from './actions'
 import * as getters from './getters'
+// import player from './modules/player'
 
 import createlogger from 'vuex/dist/logger'
 
@@ -16,5 +17,8 @@ export default new Vuex.Store({
   actions,
   getters,
   strict: debug,
-  plugins: debug ? [createlogger()] : []
+  modules: {
+    // player
+  }
+  // plugins: debug ? [createlogger()] : []
 })

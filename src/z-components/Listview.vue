@@ -1,6 +1,6 @@
 <template>
     <div class="listview" @touchmove='showShorcut' @touchend='hideShorcut'>
-        <Scroll :data="data" :listenScroll='true' :probeType='3' :otherHeight='81' :otherRem='otherRem'
+        <Scroll class="scroll-wrapper" :data="data" :listenScroll='true' :probeType='3' :otherHeight='81' :otherRem='otherRem'
                 @scrolling='dealScroll' ref='scroll'>
             <div>
                 <div class="singer-group" v-for="singers in data" :key="singers.index" ref='listGroup'>
@@ -155,65 +155,69 @@ export default {
 <style lang="less" scoped>
 @import '../common/less/variable.less';
 .listview{
+    height: 100%;
     overflow: hidden;
     position: relative;
-    .singer-group{
-        .title{
-            background: #f1f1f1;
-            padding: 0.3rem .5rem;
-        }
-        .item{
-            margin-left: .3rem;
-            padding: 0.7rem .5rem;
-            border-bottom: 1px solid #ddd;
-            .img{
-                float: left;
-                width: 2rem;height: 2rem;
-                overflow: hidden; border-radius: 50%;
-                img{
-                    width: 100%;border: 1px solid #f1f1f1
+    .scroll-wrapper{
+        height: 100%;
+        .singer-group{
+            .title{
+                background: #f1f1f1;
+                padding: 0.3rem .5rem;
+            }
+            .item{
+                margin-left: .3rem;
+                padding: 0.7rem .5rem;
+                border-bottom: 1px solid #ddd;
+                .img{
+                    float: left;
+                    width: 2rem;height: 2rem;
+                    overflow: hidden; border-radius: 50%;
+                    img{
+                        width: 100%;border: 1px solid #f1f1f1
+                    }
+                }
+                .name{
+                    float: left;line-height: 2rem;margin-left: 1rem;
+                }
+                .arrow{
+                    float: right;
+                }
+                &:after{
+                    display: block;
+                    content: '';
+                    clear: both
                 }
             }
-            .name{
-                float: left;line-height: 2rem;margin-left: 1rem;
+        }
+        .list-shorcut{
+            z-index: 9;
+            position: fixed;top: 8rem;right: .2rem;border-radius: 5px;
+            background: lighten(@color-background, 15%);
+            font-size: @small-font;padding:.2rem .1rem;
+            transition: opacity 2s;
+            opacity: 0;
+            ul{
+                color: #ccc;            
+                .flex;
+                flex-direction: column;
+                li{
+                    width: 100%;text-align: center;
+                }
             }
-            .arrow{
-                float: right;
-            }
-            &:after{
-                display: block;
-                content: '';
-                clear: both
+            .item-active{
+                color: darken(@color-background, 30%);
             }
         }
-    }
-    .list-shorcut{
-        z-index: 9;
-        position: fixed;top: 8rem;right: .2rem;border-radius: 5px;
-        background: lighten(@color-background, 15%);
-        font-size: @small-font;padding:.2rem .1rem;
-        transition: opacity 2s;
-        opacity: 0;
-        ul{
-            color: #ccc;            
-            .flex;
-            flex-direction: column;
-            li{
-                width: 100%;text-align: center;
-            }
+        .listactive{
+            opacity: 1;
         }
-        .item-active{
-            color: darken(@color-background, 30%);
+        .floattag{
+            z-index: 9; .flex;
+            position: fixed;top: 9rem;right: 2rem;border-radius: 50%;
+            width: 2rem;height: 2rem;
+            background: lighten(@color-background, 15%);
         }
-    }
-    .listactive{
-        opacity: 1;
-    }
-    .floattag{
-        z-index: 9; .flex;
-        position: fixed;top: 9rem;right: 2rem;border-radius: 50%;
-        width: 2rem;height: 2rem;
-        background: lighten(@color-background, 15%);
     }
     .fixtag{
         position: absolute;

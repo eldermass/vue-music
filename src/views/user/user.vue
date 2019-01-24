@@ -6,12 +6,12 @@
         </div>
         <div class="play-btn" v-show="!noResult">
             <div class="btn" @click="playAll">
-                <span class="iconfont icon-bofang"></span>
+                <span class="iconfont icon-zanting"></span>
                 <span>随机播放全部</span>
             </div>
         </div>
-        <div class="list-wrapper">
-            <Scroll class="favorite-list" :data='favorite' v-show="showFav">
+        <div class="list-wrapper" ref="listWrapper">
+            <Scroll class="favorite-list" :data='favorite' v-show="showFav" ref="favScroll">
                 <ul>
                     <li v-for="(song, index) in favorite" :key="song.id" class="item" @click="selectItem(song, index)">
                     <div class="txt">
@@ -21,7 +21,7 @@
                     </li>
                 </ul>
             </Scroll>
-            <Scroll class="history-list" :data='playHistory' v-show="!showFav" :otherRem='otherRem' ref="hisScroll">
+            <Scroll class="history-list" :data='playHistory' v-show="!showFav" ref="hisScroll">
                 <ul>
                     <li v-for="(song, index) in playHistory" :key="song.id" class="item" @click="selectItem(song, index)">
                     <div class="txt">
@@ -39,31 +39,33 @@
 </transition>
 </template>
 <script>
-import Switches from 'components/Switches'
-import Scroll from 'components/Scroll'
-import {mapGetters, mapActions} from 'vuex'
+import Scroll from '_c/scroll'
+import Switch from '_c/switch'
+import { playlistMixin } from '@/mixin'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
+    mixins: [playlistMixin],
     data() {
         return {
             showFav: true,
-            first: true,
-            otherRem: 0
+            first: true
         }
     },
     methods:{
         playAll() {
             let list = this.showFav ? this.favorite : this.playHistory
-            this.randomPlay({list})
+            this.randomPlay({ list })
         },
         swicthItem(index) {
             this.showFav = index === 0
             if(!this.showFav && this.first) {
                 this.first = false
-                this.$nextTick(() => {
-                    this.otherRem = 9
-                    this.$refs.hisScroll.refresh()
-                })
             }
+            this.$nextTick(() => {
+                this.$refs.hisScroll.refresh()
+                this.$refs.favScroll.refresh()
+            })
         },
         selectItem(song, index) {
             this.insertSong(song)
@@ -79,6 +81,16 @@ export default {
             })
             return `${singers}. ${song.album}`
         },
+        handlePlaylist(list) {
+            if (this.playlistLength) {
+                this.$refs.listWrapper.style.bottom = '3rem'
+            } else {
+                this.$refs.listWrapper.style.bottom = ''
+            }
+            this.$refs.hisScroll.refresh()
+            this.$refs.favScroll.refresh()
+
+        },
         ...mapActions(['insertSong', 'randomPlay'])
     },
     computed: {
@@ -92,14 +104,14 @@ export default {
         ...mapGetters(['favorite', 'playHistory'])
     },
     components: {
-        Switches, Scroll
+        'Switches': Switch, Scroll
     }
 }
 </script>
 <style lang="less" scoped>
 @import '../../common/less/variable.less';
 .user{
-    position: fixed;top: 2.5rem; bottom: 3rem;width: 100%;z-index: 10000;
+    position: fixed;top: 0; bottom: 3rem;width: 100%;z-index: 10000;
     .switch-wrapper{
         padding: .5rem 0;
     }
@@ -110,9 +122,9 @@ export default {
         }
     }
     .list-wrapper{
-        position: absolute;top:6rem;bottom: 0; width: 100%;overflow: hidden;
+        position: absolute;top: 5.5rem;bottom: 0; width: 100%;overflow: hidden;
         .favorite-list,.history-list{
-            position: absolute;top: 0;bottom: 3rem;left: 0;right: 0;
+            height: 100%;
         }
         .item{
             padding: .3rem 1rem;.flex;

@@ -3,7 +3,7 @@
         <div class="slider" ref="slider">
             <div class="slider-groups" ref="sliderGroup">
                 <slot></slot>
-            </div>    
+            </div>
         </div>
         <div class="dots">
             <span :class="['dot',{'dot-active': currentIndex === index}]" v-for="(dot, index) in dots" :key="index"></span>

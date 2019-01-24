@@ -4,6 +4,7 @@ export const themeImg = state => state.themeImg
 export const singer = state => state.singer
 export const disc = state => state.disc
 export const toplist = state => state.toplist
+export const playlistLength = state => state.playList.length
 
 export const playingState = state => state.playing
 export const fullScreen = state => state.fullScreen

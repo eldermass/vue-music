@@ -1,13 +1,31 @@
-import jsonp from './ijsonp'
-import {commonParams, options} from './config'
+import { getData } from './index'
 
-export function getSlider () {
-  let url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-  return new Promise((resolve, reject) => {
-    jsonp(url, commonParams, options).then(res => {
-      resolve(res)
-    }, err => {
-      reject(err)
+export const getSlider = () => {
+    return new Promise((resolve, reject) => {
+        getData('/pageslider').then(res => {
+            resolve(res.data)
+        }, err => {
+            reject(err)
+        })
     })
-  })
+}
+
+export const getRecommend = () => {
+    return new Promise((resolve, reject) => {
+        getData('/recommend').then(res => {
+            resolve(res.data)
+        }, err => {
+            reject(err)
+        })
+    })
+}
+
+export const getDiscList = (dissid) => {
+    return new Promise((resolve, reject) => {
+        getData('/disclist', { dissid }).then(res => {
+            resolve(res.data)
+        }, err => {
+            reject(err)
+        })
+    })
 }

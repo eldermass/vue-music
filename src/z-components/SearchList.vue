@@ -1,13 +1,13 @@
 <template>
     <div class="search-list" ref="searchlist">
         <Scroll :singer='dataList' :otherHeight='otherHeight' ref="scroll">
-        <ul>
-            <li v-for="(item, index) in dataList" :key="index" class="item"
-                @click="selectedItem(item)">
-                <p class="text">{{item}}</p>
-                <span class="iconfont icon-cha" @click.stop="deleteItem(item)"></span>
-            </li>
-        </ul>
+            <ul>
+                <li v-for="(item, index) in dataList" :key="index" class="item"
+                    @click="selectedItem(item)">
+                    <p class="text">{{item}}</p>
+                    <span class="iconfont icon-cha" @click.stop="deleteItem(item)"></span>
+                </li>
+            </ul>
         </Scroll>
     </div>
 </template>
@@ -68,7 +68,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .search-list{
-    position: absolute; top: 2rem;bottom: 0;width: 100%;
+    // position: absolute; top: 2rem;bottom: 0;width: 100%;
     overflow: hidden;padding: 0 1.5rem 0 1rem;margin-top:.5rem;
     .item{
         padding: .2rem .5rem;

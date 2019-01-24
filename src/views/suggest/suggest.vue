@@ -1,26 +1,26 @@
 <template>
     <div class="suggest">
-        <Scroll :data='result' :otherRem='otherRem' ref="sugScroll" :pullup='true'
+        <Scroll class="scroll-wrapper" :data='result' :otherRem='otherRem' ref="sugScroll" :pullup='true'
             @scrollToEnd='searchMore' :beforeScroll='true' @beforeScroll='beforeScroll'>
-        <ul class="seggest-list">
-            <li class="suggest-item" v-for="(item, index) in result" :key="index"
-                @click="selectItem(item)">
-                <span :class="['iconfont', getIcon(item.type)]"></span>
-                <p class="name" v-html="getTxt(item)"></p>
-            </li>
-            <li style="text-align:center;padding:.7rem" v-show="isMore">
-                <img :src="loadingImg" height="20" width="20">
-            </li>
-            <li v-show="!isMore && !this.result.length" style="text-align:center">
-                抱歉，没有搜索结果
-            </li>
-        </ul>
+            <ul class="seggest-list">
+                <li class="suggest-item" v-for="(item, index) in result" :key="index"
+                    @click="selectItem(item)">
+                    <span :class="['iconfont', getIcon(item.type)]"></span>
+                    <p class="name" v-html="getTxt(item)"></p>
+                </li>
+                <li style="text-align:center;padding:.7rem" v-show="isMore">
+                    <img :src="loadingImg" height="20" width="20">
+                </li>
+                <li v-show="!isMore && !this.result.length" style="text-align:center">
+                    抱歉，没有搜索结果
+                </li>
+            </ul>
         </Scroll>
         <router-view v-show="showResult"></router-view>
     </div>
 </template>
 <script>
-import {createSong} from 'common/js/song'
+import { createSong } from 'common/js/song'
 import Scroll from 'components/Scroll'
 import {playlistMixin} from 'common/js/mixin'
 import {mapMutations} from 'vuex'
@@ -176,23 +176,26 @@ export default {
 <style lang="less" scoped>
 .suggest{
     width: 100%;height: 100%;
-    padding: 1rem .5rem 0 .5rem;
-    .seggest-list{
-        .suggest-item{
-            display: flex; align-items: center;
-            padding: .2rem 1rem;
-            .iconfont{
-                font-size: 20px;
-                color: #888;
-                transform: translateY(1px);
-            }
-            .icon-zhuanji{
-                transform: translateY(0)
-            }
-            .name{
-                flex-grow: 1;line-height: 22px;
-                padding-left: .7rem;
-                overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+    padding: 0 .5rem;
+    .scroll-wrapper{
+        height: 100%;
+        .seggest-list{
+            .suggest-item{
+                display: flex; align-items: center;
+                padding: .2rem 1rem;
+                .iconfont{
+                    font-size: 20px;
+                    color: #888;
+                    transform: translateY(1px);
+                }
+                .icon-zhuanji{
+                    transform: translateY(0)
+                }
+                .name{
+                    flex-grow: 1;line-height: 22px;
+                    padding-left: .7rem;
+                    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+                }
             }
         }
     }

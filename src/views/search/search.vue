@@ -4,42 +4,48 @@
             <SearchBox ref="searchBox" @query='queryChange'></SearchBox>
         </div>
         <transition-group name="result-bar">
-        <div class="search-wrapper" v-show="!queryShow" :key="1">
-            <div class="hot-search" ref="hotSearch">
-                <h4>热门搜索</h4>
-                <ul style="height: 100%;width: 100%">
-                    <li class="key-item" v-for="(val, index) in hotkeys" :key="index"
-                        @click="addQuery(val.k)">
-                        {{val.k}}
-                    </li>
-                </ul>
+            <div class="search-wrapper" v-show="!queryShow" :key="1">
+                <div class="hot-search" ref="hotSearch">
+                    <h4>热门搜索</h4>
+                    <ul style="height: 100%;width: 100%">
+                        <li class="key-item" v-for="(val, index) in hotkeys" :key="index"
+                            @click="addQuery(val.k)">
+                            {{val.k}}
+                        </li>
+                    </ul>
+                    <Loading v-show="!hotkeys.length" :mini='true'/>
+                </div>
+                <div class="search-history" v-show="searchHistory.length" ref="searchHistoryWrapper">
+                    <ul>
+                        <li class="history-title">
+                            <p class="text">搜索历史</p>
+                            <span class="iconfont icon-lajitong" @click="clearConfirm"></span>
+                        </li>
+                        <SearchList :dataList='searchHistory' ref="searchlist"
+                        @selected='addQuery' @deleted='deleteHistory' ></SearchList>
+                    </ul>
+                </div>
             </div>
-            <div class="search-history" v-show="searchHistory.length" ref="searchHistoryWrapper">
-                <ul>
-                    <li class="history-title">
-                        <p class="text">搜索历史</p>
-                        <span class="iconfont icon-lajitong" @click="clearConfirm"></span>
-                    </li>
-                    <SearchList :dataList='searchHistory' ref="searchlist"
-                     @selected='addQuery' @deleted='deleteHistory' ></SearchList>
-                </ul>
+            <!-- 搜索结果 -->
+            <div class="search-result" v-show="queryShow" :key="2">
+                <Suggest :query='query' @beforescroll='listStartScroll' @selected='saveSearch'></Suggest>
             </div>
-        </div>
-        <div class="search-result" v-show="queryShow" :key="2">
-            <Suggest :query='query' @changeh='changeHeight' @listScroll='listScroll'
-             @selected='saveSearch'></Suggest>
-        </div>
+            <!-- /搜索结果 -->
         </transition-group>
         <Confirm ref="confirm" @confirm='clearSearchHistory'></Confirm>
     </div>
 </template>
 <script>
-import Confirm from 'components/Confirm'
-import SearchBox from 'components/SearchBox'
-import SearchList from 'components/SearchList'
-import Suggest from '@/views/suggest/suggest'
-import {mapActions, mapGetters} from 'vuex'
+import SearchBox from '_c/searchbox'
+import SearchList from '_c/searchlist'
+import Confirm from '_c/confirm'
+import Suggest from '_c/suggest'
+import Loading from '_c/loading'
+import { getHotKeys } from '@/api/search'
+import { mapActions, mapGetters } from 'vuex'
+import { playlistMixin } from '@/mixin'
 export default {
+    mixins: [playlistMixin],
     data() {
         return {
             hotkeys: [],
@@ -49,72 +55,80 @@ export default {
         }
     },
     created() {
-        this.getHotKey()
+        this.getHotKeyData()
     },
     methods: {
-        clearConfirm() {
-            this.$refs.confirm.show()
-        },
-        deleteHistory(item) {
-            this.deleteSearchHistory(item)
-        },
-        setHistoryHeight() {
+        setHistoryPosition() {
             let hotSearch = this.$refs.hotSearch.getBoundingClientRect()
             this.$refs.searchHistoryWrapper.style.top = hotSearch.height + 'px'
-        },
-        saveSearch() {
-            this.saveSearchHistory(this.query)
-        },
-        listScroll() {
-            this.$refs.searchBox.blur()
-        },
-        async getHotKey() {
-            let res = await this.$get('/hotkey')
-            this.hotkeys = res.data.hotkey.slice(0, 10)
+            // 重新计算滚动
+            this.$refs.searchlist.refresh()
         },
         addQuery(val) {
             this.$refs.searchBox.setQuery(val)
         },
+        deleteHistory(item) {
+            this.deleteSearchHistory(item)
+        },
+        async getHotKeyData() {
+            let data = await getHotKeys()
+            this.hotkeys = data.hotkey.slice(0, 10)
+        },
         queryChange(query) {
             clearTimeout(this.searchTimer)
             this.searchTimer = setTimeout(() => {
-                if(query){
+                if (query) {
                     this.query = query
                     this.queryShow = true
-                }else{
+                } else {
                     this.queryShow = false
                 }
             }, 200)
         },
-        changeHeight() {
-            this.$refs.search.style.bottom = `6rem`
+        clearConfirm() {
+            this.$refs.confirm.show()
+        },
+        listStartScroll() {
+            this.$refs.searchBox.blur()
+        },
+        saveSearch() {
+            this.saveSearchHistory(this.query)
+        },
+        handlePlaylist(list) {
+            if (this.playlistLength) {
+                this.$refs.searchHistoryWrapper.style.bottom = '3rem'
+            } else {
+                this.$refs.searchHistoryWrapper.style.bottom = ''
+            }
+            this.$refs.searchlist.refresh()
         },
         ...mapActions(['saveSearchHistory', 'deleteSearchHistory', 'clearSearchHistory'])
     },
     watch:{
-        queryShow() {
-            this.$refs.searchlist.handlePlaylist()
+        queryShow () {
+            // this.$refs.searchlist.handlePlaylist()
         },
-        hotkeys() {
-            this.$nextTick(() => {
-                this.setHistoryHeight()
-                this.$refs.searchlist.setHeight()
-            })
+        hotkeys (newHotKeys) {
+            if (newHotKeys.length) {
+                this.$nextTick(() => {
+                    this.setHistoryPosition()
+                })
+            }
         }
     },
     computed: {
         ...mapGetters(['searchHistory'])
     },
     components: {
-        SearchBox, Suggest, SearchList, Confirm
+        SearchBox, Suggest, SearchList, Confirm, Loading
     }
 }
 </script>
 <style lang="less" scoped>
 .search{
-    position: fixed; top: 2.5rem; bottom: 3rem;width: 100%;
+    position: fixed; top: 0; bottom: 3rem;width: 100%;
     .search-box-wrapper{
-        padding: .5rem 3rem;
+        padding: .7rem 3rem;
     }
     .search-wrapper{
         position: absolute;top:3rem;bottom:0;width:100%;
@@ -135,22 +149,28 @@ export default {
             }
         }
         .search-history{
-            position: absolute;bottom: 0;top: 0; width: 100%;
+            position: absolute;
+            top: 80px; 
+            bottom: 0;
+            width: 100%;
             color: steelblue;
-            .history-title{
-                border-bottom: 1px solid #dfdfdf;
-                padding: .5rem 2rem .5rem 1rem;
-                .text{
-                    float: left;
-                }
-                .iconfont{
-                    float: right;
-                    font-size: 18px;
-                }
-                &:after{
-                    display: block;
-                    content: '';
-                    clear: both
+            ul{
+                height: 100%;
+                .history-title{
+                    border-bottom: 1px solid #dfdfdf;
+                    padding: .5rem 2rem .5rem 1rem;
+                    .text{
+                        float: left;
+                    }
+                    .iconfont{
+                        float: right;
+                        font-size: 18px;
+                    }
+                    &:after{
+                        display: block;
+                        content: '';
+                        clear: both
+                    }
                 }
             }
         }
