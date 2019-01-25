@@ -105,13 +105,13 @@ import ProgressCircle from './progress-circle'
 import Progressbar from './progress'
 import Volume from './volume'
 import Playlist from './playlist'
-import { getLyric } from '@/api/song'
 import Lyric from 'lyric-parser'
+import { getLyric } from '@/api/song'
+import { favoriteMix } from '@/mixin'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 import { disturb } from 'common/js/disturb'
 import { playMode } from 'common/js/config'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { favoriteMix } from 'common/js/mixin'
 export default {
     mixins: [favoriteMix],
     data() {
@@ -385,8 +385,9 @@ export default {
             return this.currentTime / this.currentSong.duration
         },
         curSongUrl() {
-            if(!this.currentSong.url) return ''
-            return this.currentSong.url.replace(/vkey=([^&]+)&/,($1,$2) => {
+            if(!this.currentSong.url) return
+
+            return this.currentSong.url.replace(/vkey=([^&]+)&/, ($1, $2) => {
                 return `vkey=${this.vkey}&`
             })
         }
@@ -420,7 +421,7 @@ export default {
     },
     watch: {
         currentSong (newSong, oldSong) {
-            if(newSong.id === oldSong.id)
+            if(newSong.id === oldSong.id || !newSong.id)
                 return
             if(this.currentLyric.stop)
                 this.currentLyric.stop()

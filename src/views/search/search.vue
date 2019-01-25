@@ -27,7 +27,7 @@
                 </div>
             </div>
             <!-- 搜索结果 -->
-            <div class="search-result" v-show="queryShow" :key="2">
+            <div class="search-result" v-show="queryShow" :key="2" ref="searchResult">
                 <Suggest :query='query' @beforescroll='listStartScroll' @selected='saveSearch'></Suggest>
             </div>
             <!-- /搜索结果 -->
@@ -97,8 +97,10 @@ export default {
         handlePlaylist(list) {
             if (this.playlistLength) {
                 this.$refs.searchHistoryWrapper.style.bottom = '3rem'
+                this.$refs.searchResult.style.bottom = '3rem'
             } else {
                 this.$refs.searchHistoryWrapper.style.bottom = ''
+                this.$refs.searchResult.style.bottom = ''
             }
             this.$refs.searchlist.refresh()
         },
@@ -106,13 +108,13 @@ export default {
     },
     watch:{
         queryShow () {
-            // this.$refs.searchlist.handlePlaylist()
+            
         },
         hotkeys (newHotKeys) {
             if (newHotKeys.length) {
-                this.$nextTick(() => {
+                setTimeout(() => {
                     this.setHistoryPosition()
-                })
+                }, 100)
             }
         }
     },
@@ -150,7 +152,7 @@ export default {
         }
         .search-history{
             position: absolute;
-            top: 80px; 
+            top: 177px; 
             bottom: 0;
             width: 100%;
             color: steelblue;

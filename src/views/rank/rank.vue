@@ -47,11 +47,12 @@ export default {
             } else {
                 this.$refs.rank.style.bottom = ''
             }
+            this.$refs.scrolls.refresh()
         },
         goDetail(topitem) {
             // console.log(topitem)
             this.SET_TOPLIST(topitem)
-            this.$router.push({path: `/rank/${topitem.id}`})
+            this.$router.push({ path: `/rank/${topitem.id}` })
         },
         ...mapMutations(['SET_TOPLIST'])
     },

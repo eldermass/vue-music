@@ -8,7 +8,7 @@ function Song ({id, mid, singer, name, album, duration, image, url}) {
   this.image = image
   this.url = url
 }
-const vkey = '5F13D4313F26CCF73780CCE240E4AB665B30670EC691791507BCC6A9706F8DE3AFBC413358349B173226AB2C8453FA2DDBE194759F8F172A'
+const vkey = 'ABC'
 export function createSong (songitem) {
   return new Song({
     id: songitem.songid,

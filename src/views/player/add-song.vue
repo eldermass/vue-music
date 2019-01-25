@@ -41,8 +41,8 @@ import Toptip from '_c/toptip'
 import SearchBox from '_c/searchbox'
 import Switches from '_c/switch'
 import { mapGetters, mapActions } from 'vuex'
+import { searchMix } from '@/mixin'
 
-import { searchMix } from 'common/js/mixin'
 export default {
     mixins: [searchMix],
     data() {

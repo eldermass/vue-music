@@ -20,7 +20,7 @@ export default {
         }
     },
     created() {
-        if(!this.disc.dissid){
+        if(!this.disc || !this.disc.dissid){
             this.$router.push({ 
                 path: '/recommend'
             })

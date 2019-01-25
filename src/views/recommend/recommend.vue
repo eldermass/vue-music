@@ -70,9 +70,6 @@ export default {
         async getRecommendData(){
             let data = await getRecommend()
             this.discList = data.data.list
-            this.$nextTick(() => {
-                this.changePosition()
-            })
         },
         checkablum (item) {
             this.SET_DISC(item)
@@ -84,13 +81,15 @@ export default {
         changePosition () {
             // 图片载入后撑开区域
             this.$refs.recList.style.top = this.$refs.recList.offsetTop + 'px'
-            this.$refs.recList.style.position = 'absolute'
         },
         ...mapMutations(['SET_DISC'])
     },
     mounted () {
         this.getSliderDatas()
         this.getRecommendData()
+        this.$nextTick(() => {
+            this.changePosition()
+        })
     },
     components:{
         Slider, Scroll, Loading
@@ -102,8 +101,8 @@ export default {
 .recommend{
     height: 100%;
     .recommend-list{
-        // position: absolute;
-        // top: 154px;
+        position: absolute;
+        top: 160px;
         bottom: 0; 
         width: 100%;
         .list-title{

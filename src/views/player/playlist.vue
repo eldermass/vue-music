@@ -38,10 +38,10 @@
 <script>
 import Scroll from '_c/scroll'
 import Confirm from '_c/confirm'
+import { changeModeMix, favoriteMix } from '@/mixin'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { playMode } from 'common/js/config'
-import { changeModeMix, favoriteMix } from 'common/js/mixin'
 import AddSong from './add-song'
 export default {
     mixins: [changeModeMix, favoriteMix],
