@@ -93,6 +93,9 @@ export default {
                 this.result = this.formatResult(data, true)
             else
                 this.result = this.result.concat(this.formatResult(data))
+            this.$nextTick(() => {
+                this.$refs.scroll.refresh()
+            })
         },
         formatResult (data, first) {
             let res = []

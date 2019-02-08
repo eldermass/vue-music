@@ -72,6 +72,7 @@ export default {
         },
         getDesc(song) {
             let singers = ''
+            if (!song.singer) return ''
             song.singer.forEach((val, index) => {
                 if(index === 0){
                     singers = val.name

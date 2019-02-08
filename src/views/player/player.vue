@@ -122,7 +122,8 @@ export default {
             currentLrcLine: 0,
             lycPageShow: false,
             touch: {},
-            volumnIcon: 'icon-shengyinyinliangmianxing'
+            volumnIcon: 'icon-shengyinyinliangmianxing',
+            firstInPlayer: true
         }
     },
     methods:{
@@ -271,7 +272,6 @@ export default {
             if (!this.songReady) {
                 // 手机浏览器，点击还没有准备的时候 就重新加载
                 this.$refs.audio.load()
-                this.SET_PLAYING_STATE(false)     
                 if (this.currentLyric.seek) {
                     this.currentLyric.seek(0)
                     this.currentLyric.togglePlay()
@@ -280,7 +280,7 @@ export default {
             }
             this.SET_PLAYING_STATE(!this.playingState)        
             if(this.currentLyric.togglePlay)
-                this.currentLyric.togglePlay()   
+                this.currentLyric.togglePlay()
         },
         end() {
             if(this.mode === playMode.loop){
@@ -293,6 +293,12 @@ export default {
             // this.songReady = true
         },
         ready() {
+            // console.log('can play')
+            // console.log('paused -- ' + this.$refs.audio.paused)
+            if (this.firstInPlayer) {
+                this.SET_PLAYING_STATE(true)
+                this.firstInPlayer = false
+            }
             this.songReady = true
             this.savePlayHistory(this.currentSong)
         },
@@ -425,6 +431,12 @@ export default {
                 return
             if(this.currentLyric.stop)
                 this.currentLyric.stop()
+            // 第一次进入，设置为非播放状态
+            if (this.firstInPlayer) {
+                this.SET_PLAYING_STATE(false)
+                this.getLrc()
+                return
+            }
             // nextTick 可以换成 setTimeout 加长页面切换的中的播放问题
             this.$nextTick(() => {
                 this.$refs.audio.play()
