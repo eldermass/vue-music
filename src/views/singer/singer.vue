@@ -38,13 +38,24 @@ export default {
         this.getSingerListData()
     },
     methods:{
+        webpToJpg (singersGroup) {
+            singersGroup.singerlist = singersGroup.singerlist.map(item => {
+                return Object.assign(item, {
+                    singer_pic: item.singer_pic.replace('.webp', '.jpg')
+                })
+            })
+        },
         async getSingerListData () {
             let hotSinger = await getSingerList({ page: 1 })
+            this.webpToJpg(hotSinger)
             this.tags = hotSinger.tags
             this.singers = [hotSinger]
             // 载入缓存的singer数据
             if(!window.localStorage.singers){
                 let data = await getSingerList({ page: 1, all: true })
+                data.forEach(item => {
+                    this.webpToJpg(item)
+                })
                 let singerString =  JSON.stringify(data)
                 data.unshift(hotSinger)
                 this.singers = data

@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
+    "server": "cd musicserver && node index.js",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
   },

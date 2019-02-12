@@ -279,7 +279,7 @@ export default {
                 return
             }
             this.SET_PLAYING_STATE(!this.playingState)        
-            if(this.currentLyric.togglePlay)
+            if (this.currentLyric.togglePlay)
                 this.currentLyric.togglePlay()
         },
         end() {
@@ -298,6 +298,8 @@ export default {
             if (this.firstInPlayer) {
                 this.SET_PLAYING_STATE(true)
                 this.firstInPlayer = false
+                if (this.currentLyric.togglePlay)
+                    this.currentLyric.togglePlay()
             }
             this.songReady = true
             this.savePlayHistory(this.currentSong)

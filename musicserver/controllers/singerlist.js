@@ -1,6 +1,6 @@
 const https = require('https')
 
-
+/* eslint-disable */
 module.exports = async ctx => {
     let { page, area, sex, genre, index, all } = ctx.request.query
     let msg = {
@@ -9,7 +9,8 @@ module.exports = async ctx => {
             "cv": 10000
         },
         "singerList": {
-            "module": "Music.SingerListServer", "method": "get_singer_list",
+            "module": "Music.SingerListServer",
+            "method": "get_singer_list",
             "param": {
                 "area": area ? parseInt(area) : -100,
                 "sex": sex ? parseInt(sex) : -100,

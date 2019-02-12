@@ -33,7 +33,7 @@
                 <span class="floattag" v-show="floatTagShow" ref="floattag">{{ floatTag | shortcut }}</span>
             </div>
         </transition>
-        <div class="fix-top" v-show="listScrollY < 0" ref="fixtag">{{ floatTag }}</div>
+        <div class="fix-top" v-show="fixTopShow" ref="fixtag">{{ floatTag }}</div>
     </div>
 </template>
 <script>
@@ -58,7 +58,8 @@ export default {
             touchPointToTop: 0,
             floatTagShow: false,
             shorcutShow: false,
-            timer: null
+            timer: null,
+            fixTopShow: false
         }
     },
     methods: {
@@ -92,6 +93,13 @@ export default {
             this.listScrollY = e.y
         },
         dealListScroll (y) {
+            // 顶部tap是否显示, 解决v-show的切换在uc浏览器很卡
+            if (!this.fixTopShow && y < 0) {
+                this.fixTopShow = true
+            }
+            if (this.fixTopShow && y >= 0) {
+                this.fixTopShow = false
+            }
             for (let i = 0; i < this.groupHeights.length; i++) {
                 let yTop = this.groupHeights[i]
                 let yBottom = this.groupHeights[i + 1]
