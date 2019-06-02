@@ -2,8 +2,9 @@ import Axios from 'axios'
 
 Axios.defaults.timeout = 10000
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'
-Axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://music.60late.com' : 'http://localhost:8020/mapi'
-// Axios.defaults.baseURL = 'http://music.60late.com'
+// Axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://music.60late.com' : 'http://localhost:8020/mapi'
+// 默认音乐数据api的根路径
+Axios.defaults.baseURL = process.env.API_URL + '/mapi'
 
 Axios.interceptors.request.use(config => {
   // console.log(config)
@@ -22,6 +23,13 @@ Axios.interceptors.response.use(res => {
   console.log('response error')
   return Promise.reject(err)
 })
+// 非音乐api请求，用其他实例
+// eslint-disable-next-line
+const userInstance = Axios.create({
+  baseURL: process.env.API_URL + '/user',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
 
 export function getData (url, params) {
   return new Promise((resolve, reject) => {

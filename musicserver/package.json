@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index",
     "dev": "env-cmd ./.env node index",
-    "watch": "env-cmd ./.env nodemon index NODE_ENV=test_string"
+    "watch": "env-cmd ./.env nodemon index"
   },
   "keywords": [
     "server"
