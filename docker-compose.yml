@@ -6,5 +6,20 @@ services:
     image: nginx
     ports:
       - "80:80"
+    volumes:
+      - ~/nginx:/etc/conf.d
+    links:
+      - service_music
+    privileged: true
+    depends_on:
+      - service_music
+  service_music:
+    container_name: music
+    restart: always
+    image: asd285653184/music
+    expose:
+      - "8020"
+    ports:
       - "8020:8020"
-    
+    command: bash -c "cd /app/musicserve && npm run dev"
+    privileged: true

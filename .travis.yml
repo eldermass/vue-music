@@ -31,7 +31,8 @@ after_script:
   - mkdir -p ~/.ssh
   - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
   # - bash -c "ssh-add <(echo '$SERVER_SSH_KEY')"
-  - bash -c "ssh-keygen -f test.txt"
+  - bash -c "ssh-keygen -f tmp_key.txt"
+  - bash -c "ssh-add <(cat test.txt)"
   - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd /home/$SERVER_USER && bash test.sh'
 
   # - cd ./dist
