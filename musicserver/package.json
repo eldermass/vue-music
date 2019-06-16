@@ -19,10 +19,10 @@
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "koa2-cors": "^2.0.6"
+    "koa2-cors": "^2.0.6",
+    "env-cmd": "^8.0.2"
   },
   "devDependencies": {
-    "env-cmd": "^8.0.2",
     "nodemon": "^1.18.10"
   }
 }
