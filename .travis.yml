@@ -13,7 +13,6 @@ cache:
 install:
   - npm install
   # - docker run -d -p 8020:8020 --name blog blog
-  - echo $TEST_KEY
 
 before_script:
 
@@ -34,8 +33,8 @@ after_script:
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
-  # - bash -c "ssh-add <(echo '$SERVER_SSH_KEY')"
-  - bash -c "ssh-add <(cat test.txt)"
+  - bash -c "ssh-add <(echo '$SERVER_SSH_KEY')"
+  # - bash -c "ssh-add <(cat id_rsa.txt)" 
   - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd /home/60late && bash redeploy.sh'
 
   # - cd ./dist
@@ -53,7 +52,7 @@ branches:
 
 env:
  global:
-   # 我将其添加到了travis-ci的环境变量中
+   # 我将其添加到了travis-ci的环境变量中, 以下是用travis-cli生成的加密变量
    secure: kP9qZVtSnc83ipIkP0/8Mj8AkEj6PWu7hMz6c+hzi33ijvfkVHL8ZkapVuS1aA3RLv/nd942mEBDDX/vzlecxNDv2QJ/zKHuXkq5yGcKv6mhkOD+quhlyYMKMcrHN91yId0xmLJnsQ08LxUq3I7sI4syEe9GnxSlXKI5+I5BpIM5VpnKpFeYqVfJzPyTe/oFtiuYQAtCiuatds8LHqWhMWLn2khhgwgbgU/Uwg91Env1BTXipZYsOD/EYSVJ5I6NTvIvCt2CdXvuquRBLAqfG/fIUyMzoXF4QTHG6p8bZbMYKpbflE+pzW0VvrgJB7DvFQY2JVK7SB/FWR/RHdVsE3dSsTG6p6Na4k1fPWQVoSJ0KHQehYLRcZgVtG8hBX/P0eYUCGr+6pK4+iuww+itDi7Ab5VPZP95NzgRR00qGz1de99+wtzX+kIKWRmdX9PVNk2X4D2ZJhcjBHBIF5iAhUm3fmuOrcKKSFEYAW7AzSXXg4yxqbPa+fta2xS1sZQ+zqw/LM1zLMqa/znlfIbiCRjzUG33u3CbiNAxuK9vX0eYGZb1DZexLzTpiOWSGYZ3F/kSYb60Z//gyn8bC/iBIgNUm1FrZLfr1QmxDru1x/4+aqFOldteWH8UQu06qGQyIRhDMgmuNMlEiNbf5Z3d2RsAVkpR9953nMcf42CYWyw=
 
    
