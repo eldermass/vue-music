@@ -10,12 +10,15 @@ cache:
   directories:
     - node_modules
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_8027c236d573_key -iv $encrypted_8027c236d573_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+
 install:
   - npm install
   # - docker run -d -p 8020:8020 --name blog blog
 
 before_script:
-  - openssl aes-256-cbc -K $encrypted_8027c236d573_key -iv $encrypted_8027c236d573_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+
 script:
   - npm run build
   - cd musicserver
