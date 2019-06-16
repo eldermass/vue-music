@@ -20,6 +20,7 @@ script:
   - npm run build
   - cd musicserver
   - npm install
+  - cd ../
   # - docker ps | grep -q music
 
 after_script:
