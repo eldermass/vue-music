@@ -15,14 +15,16 @@ install:
   # - docker run -d -p 8020:8020 --name blog blog
 
 before_script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
   - npm run build
+  - cd musicserver
+  - npm install
   # - docker ps | grep -q music
 
 after_script:
-
+  # docker打包
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t asd285653184/music .
   - docker push asd285653184/music
   # 触发服务端更新
@@ -32,7 +34,7 @@ after_script:
   - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
   # - bash -c "ssh-add <(echo '$SERVER_SSH_KEY')"
   - bash -c "ssh-add <(cat test.txt)"
-  - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd /home/60late && bash test.sh'
+  - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd /home/60late && bash redeploy.sh'
 
   # - cd ./dist
   # - git init
