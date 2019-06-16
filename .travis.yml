@@ -1,0 +1,56 @@
+language: node_js
+
+node_js:
+  - "10"
+
+services:
+  - docker
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+  # - docker run -d -p 8020:8020 --name blog blog
+
+before_script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+  - npm run build
+  # - docker ps | grep -q music
+
+after_script:
+
+  - docker build -t asd285653184/music .
+  - docker push asd285653184/music
+
+  # - cd ./dist
+  # - git init
+  # - git config user.name "${U_NAME}"
+  # - git config user.email "${U_EMAIL}"
+  # - git add .
+  # - git commit -m "update_tools"
+  # - git push --force --quiet "https://${TOKEN}@${REPO_URL}" master:${REPO_BRANCH}
+
+#指定分支，只有指定的分支提交时才会运行脚本
+branches:
+  only:
+    - master
+
+env:
+ global:
+   # 我将其添加到了travis-ci的环境变量中
+   
+# deploy:
+#   provider: page
+#   skip_cleanup: true
+#   github_token: $GITHUB_TOKEN
+#   on: 
+#     branch: master
+
+# env:
+#   - DB=postgres
+#   - SH=bash
+#   - PACKAGE_VERSION='1.0.*'
