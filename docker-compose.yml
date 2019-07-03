@@ -22,7 +22,5 @@ services:
     image: asd285653184/music
     expose:
       - "8020"
-    ports:
-      - "8020:8020"
     command: sh -c "cd /app/musicserver && npm run dev"
     privileged: true
