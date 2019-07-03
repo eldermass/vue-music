@@ -7,7 +7,9 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ~/nginx:/etc/nginx/conf.d
+      - ~/conf/nginx/conf.d:/etc/nginx/conf.d
+      - ~/conf/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ~/logs/nginx:/var/log/nginx
     links:
       - service_music
     privileged: true

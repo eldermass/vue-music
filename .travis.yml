@@ -39,7 +39,7 @@ after_script:
   - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
   # - bash -c "ssh-add <(echo $SERVER_SSH_KEY)"
   - bash -c "ssh-add <(cat id_rsa)" 
-  - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd /home/60late && bash deploy.sh'
+  - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'cd ~ && bash deploy.sh'
 
   # - cd ./dist
   # - git init
