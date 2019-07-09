@@ -4,7 +4,7 @@ Axios.defaults.timeout = 10000
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'
 // Axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://music.60late.com' : 'http://localhost:8020/mapi'
 // 默认音乐数据api的根路径
-Axios.defaults.baseURL = process.env.API_URL + '/mapi'
+Axios.defaults.baseURL = process.env.API_URL ? process.env.API_URL + '/mapi' : '/mapi'
 
 Axios.interceptors.request.use(config => {
   // console.log(config)
